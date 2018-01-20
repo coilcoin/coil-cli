@@ -12,6 +12,7 @@ import requests
 import argparse
 import binascii
 from urllib.parse import urlparse
+from pathlib import Path
 
 # Paths
 chain_path = "/home/jesse/.config/coil/blockchain/chain.json"
@@ -38,9 +39,13 @@ def writeChainToDisk(chainDict):
     print("[coil] Successfully downloaded chain from peers")
 
 def readChainFromDisk():
-    f = open(chain_path, "r")
-    chain = json.loads(f.read())
-    return chain
+    p = Path(chain_path)
+    if p.file_exists():
+        f = open(chain_path, "r")
+        chain = json.loads(f.read())
+        return chain
+    else:
+        return {}
 
 def readWallet(wallet_path):
     f = open(wallet_path, "r")
